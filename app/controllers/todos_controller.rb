@@ -2,7 +2,7 @@ class TodosController < ApplicationController
   before_action :authenticate
 
   def index
-    @todos = Todo.all
+    @todos = Todo.where(email: session[:current_email])
   end 
 
   def new 
@@ -11,13 +11,13 @@ class TodosController < ApplicationController
 
   def create
     # redirect_to todos_path
-    
-    @todo = Todo.new(set_todo_params)
-    if @todo.save
+    Todo.create(set_todo_params.merge(email: session[:current_email])) 
+    # @todo = Todo.new(set_todo_params)
+    # if @todo.save
       redirect_to todos_path
-    else
-      render :new
-    end
+    # else
+    #   render :new
+    # end
   end
 
   private
